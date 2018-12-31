@@ -1,12 +1,14 @@
 import requests
 from bs4 import BeautifulSoup
-
+import json
+import jsonpath
 class Serach(object):
-    def __init__(self):
-        url="http://s.gxrc.com/sJob?schType=1&workProperty=&keyword=运维"
+    def __init__(self,page):
+        url="http://s.gxrc.com/sJob?schType=1&workProperty=&keyword=运维&page={num}".format(num=page)
+        zlurl="https://fe-api.zhaopin.com/c/i/sou?pageSize=90&cityId=785&workExperience=-1&education=-1&companyType=-1&employmentType=-1&jobWelfareTag=-1&kw=%E8%BF%90%E7%BB%B4&kt=3&_v=0.36566866&x-zp-page-request-id=d466571403cb46fdaf13754944b7cbc5-1546252426460-171808"
         self.html=requests.get(url)
-
-    def selectinfo(self):
+        self.html_zl=requests.get(zlurl)
+    def selectinfo_gxcr(self):
         htmltxt=self.html.text
         # print(htmltxt)
         classall=BeautifulSoup(htmltxt,features='lxml')
@@ -31,15 +33,10 @@ class Serach(object):
                 companyinfo=companyname.a['href']
                 # print(companyinfo)
                 print("%s\t%s\n%s\t%s\n%s\t%s\t%s\n"%(c_name,companyinfo,postname,url,w_money,w_location,p_date))
+    def selectinfo_zlzp(self):
+        self.html_zl.encoding='utf8'
+        htmltext_zlzp=self.html_zl.text
+        zlzp_json=json.loads(htmltext_zlzp)
+        a=jsonpath.jsonpath(zlzp_json,"$..code")
+        print(a)
 
-                # print(t.get_text())
-        # companyinfo=classall.find_all('li',{"class":"w2"})
-        # for info in companyinfo:
-        #     url = classall.f
-        #     print(url[0])
-        #     print(info.get_text())
-
-
-
-a=Serach()
-a.selectinfo()
