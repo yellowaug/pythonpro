@@ -1,30 +1,44 @@
-import requests
-import json
-import jsonpath
-class TEXT(object):
-    def __init__(self):
-        zlurl="https://fe-api.zhaopin.com/c/i/sou?pageSize=90&cityId=785&workExperience=-1&education=-1&" \
-              "companyType=-1&employmentType=-1&jobWelfareTag=-1&kw=%E8%BF%90%E7%BB%B4&kt=3&_v=0.36566866" \
-              "&x-zp-page-request-id=d466571403cb46fdaf13754944b7cbc5-1546252426460-171808"
-        self.html_zl=requests.get(zlurl)
-    def getinfo(self):
-        self.html_zl.encoding='utf8'
-        htmltext_zlzp=self.html_zl.text
-        zlzp_json=json.loads(htmltext_zlzp)
-        companyname=jsonpath.jsonpath(zlzp_json,"$..company[name]")
-        companytype=jsonpath.jsonpath(zlzp_json,"$..company[type][name]")
-        companysize=jsonpath.jsonpath(zlzp_json,"$..company[size][name]")
-        jobname=jsonpath.jsonpath(zlzp_json,"$..jobName")
-        postdescurl=jsonpath.jsonpath(zlzp_json,"$..positionURL")
-        jobcity=jsonpath.jsonpath(zlzp_json,"$..city[display]")
-        update=jsonpath.jsonpath(zlzp_json,"$..updateDate")
-        salary=jsonpath.jsonpath(zlzp_json,"$..salary")
-        welfare=jsonpath.jsonpath(zlzp_json,"$..welfare")
-        workexp=jsonpath.jsonpath(zlzp_json,"$..workingExp[name]")
+import threading
+import time
 
+class myThread (threading.Thread):
+    def __init__(self, threadID, name, counter):
+        threading.Thread.__init__(self)
+        self.threadID = threadID
+        self.name = name
+        self.counter = counter
+    def run(self):
+        print ("Starting " + self.name)
+       # 获得锁，成功获得锁定后返回True
+       # 可选的timeout参数不填时将一直阻塞直到获得锁定
+       # 否则超时后将返回False
+        threadLock.acquire()
+        print_time(self.name, self.counter, 3)
+        # 释放锁
+        threadLock.release()
 
-        print("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n"%(companyname,companytype,companysize,jobname,postdescurl,jobcity,update,salary,welfare,workexp))
+def print_time(threadName, delay, counter):
+    while counter:
+        time.sleep(delay)
+        print ("%s: %s" % (threadName, time.ctime(time.time())))
+        counter -= 1
 
+threadLock = threading.Lock()
+threads = []
 
-a =TEXT()
-a.getinfo()
+# 创建新线程
+thread1 = myThread(1, "Thread-1", 1)
+thread2 = myThread(2, "Thread-2", 2)
+
+# 开启新线程
+thread1.start()
+thread2.start()
+
+# 添加线程到线程列表
+threads.append(thread1)
+threads.append(thread2)
+
+# 等待所有线程完成
+for t in threads:
+    t.join()
+print ("Exiting Main Thread")

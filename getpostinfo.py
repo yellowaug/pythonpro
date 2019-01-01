@@ -7,11 +7,6 @@ class GETpostinfo(object):
         htmltext=self.htmltext.text
         classall=BeautifulSoup(htmltext,features='lxml')
         classinfo=classall.find_all('table',{"class":"gs_zp_table"})
-        # for info1 in classinfo:
-        #     infolist=info1.find_all('td')
-        #     for i_text in infolist:
-        #         print(i_text.get_text())
-        #     for info
         for info in classinfo:
             welfare=info.td.find_next(attrs={"id":"welfare_td"}).get_text() #公司福利
             welfare="".join(welfare.split())#去除获取内容中的空格段落
@@ -21,7 +16,6 @@ class GETpostinfo(object):
             company_type = info_1.ul.find('li').get_text()
             company_total_people = info_1.ul.find('li').find_next('li').get_text()
             company_industry = info_1.ul.find('li').find_next('li').find_next('li').get_text()
-            # print(type(company_total_people))
             print("%s\t%s\t%s\n"%(company_type,company_total_people,company_industry))
     def getworkcontent(self):
         htmltext=self.htmltext.text
