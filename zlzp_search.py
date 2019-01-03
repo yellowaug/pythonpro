@@ -1,8 +1,9 @@
+import threading
+import time
+import sqlomp
 import requests
 import json
 import jsonpath
-import threading
-import time
 class ZLZPSearch(object):
     def __init__(self):
         zlurl="https://fe-api.zhaopin.com/c/i/sou?pageSize=90&cityId=785&workExperience=-1&education=-1&" \
@@ -13,24 +14,31 @@ class ZLZPSearch(object):
         self.html_zl.encoding='utf8'
         htmltext_zlzp=self.html_zl.text
         zlzp_json=json.loads(htmltext_zlzp)
-        companyname=jsonpath.jsonpath(zlzp_json,"$..company[name]")
-        companytype=jsonpath.jsonpath(zlzp_json,"$..company[type][name]")
-        companysize=jsonpath.jsonpath(zlzp_json,"$..company[size][name]")
-        jobname=jsonpath.jsonpath(zlzp_json,"$..jobName")
-        postdescurl=jsonpath.jsonpath(zlzp_json,"$..positionURL")
-        jobcity=jsonpath.jsonpath(zlzp_json,"$..city[display]")
-        update=jsonpath.jsonpath(zlzp_json,"$..updateDate")
-        salary=jsonpath.jsonpath(zlzp_json,"$..salary")
-        welfare=jsonpath.jsonpath(zlzp_json,"$..welfare")
-        workexp=jsonpath.jsonpath(zlzp_json,"$..workingExp[name]")
+        companyname=jsonpath.jsonpath(zlzp_json,"$..company[name]") #公司名称
+        companytype=jsonpath.jsonpath(zlzp_json,"$..company[type][name]") #公司性质
+        companysize=jsonpath.jsonpath(zlzp_json,"$..company[size][name]") #公司规模
+        jobname=jsonpath.jsonpath(zlzp_json,"$..jobName") #岗位名称
+        postdescurl=jsonpath.jsonpath(zlzp_json,"$..positionURL") #岗位url
+        jobcity=jsonpath.jsonpath(zlzp_json,"$..city[display]") #工作所在地
+        update=jsonpath.jsonpath(zlzp_json,"$..updateDate") #发布时间
+        salary=jsonpath.jsonpath(zlzp_json,"$..salary") #工资
+        welfare=jsonpath.jsonpath(zlzp_json,"$..welfare") #公司福利
+        workexp=jsonpath.jsonpath(zlzp_json,"$..workingExp[name]") #工作年限要求
+        sql=sqlomp.SQLOMP()
+        insdata={"companyname":companyname[0],"companytype":companytype[0],
+                 "companysize":companysize[0],"postioname":jobname[0],
+                 "postdescurl":postdescurl[0],"workexp":workexp[0],
+                 "worklocation":jobcity[0],"wagemoney":salary[0],
+                 }
+        sql.instosql("zlzpdb",**insdata)
         print("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n"%(companyname,companytype,companysize,jobname,postdescurl,jobcity,update,salary,welfare,workexp))
 
-# t1=time.time()
-# a =TEXT()
-# # a.getinfo()
+t1=time.time()
+a =ZLZPSearch()
+a.getinfo()
 # t=threading.Thread(target=a.getinfo)
 # t.start()
 # print(threading.activeCount())
-# t2=time.time()
-# print(t2-t1)
+t2=time.time()
+print(t2-t1)
 

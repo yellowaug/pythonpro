@@ -22,7 +22,7 @@ if __name__=="__main__":
     th2=threading.Thread(target=zlzp)
     threads.append(th2)
     for t in threads:
-        t.setDaemon(True)
+        # t.setDaemon(True)
         t.start()
     t.join()
 

@@ -1,21 +1,21 @@
 from pymysql import connect
 # from hjctool import check_net
 class Sql_manager(object):
-    def __init__(self):
+    def __init__(self,data):
         # net_code=check_net()
         # if net_code==1:
         host = "192.168.15.251"
         user = "root"
         pw = "zzq"
         # sql_com="select * from ip_mac"
-        db="ipdata"
+        db=data
         self.sql=connect(host,user,pw,db)
         self.cur=self.sql.cursor()
         # cur.execute(sql_com)
         # table_info=cur.fetchall()
-        print("连接成功。")
+        # print("连接成功。")
         # elif net_code==0:
-        print("连接失败，请检查网络")
+        # print("连接失败，请检查网络")
     def omp_sql(self,table_name="account_list"):
         #coum_name，value_name 两个变量使用数组或者列表的形式进行填充
         # sql_com="use %s"%db_name
@@ -36,11 +36,14 @@ class Sql_manager(object):
         self.sql.commit()
         self.info_seclect = self.cur.fetchall()
         self.cur.close()
-    def ins_computer_info_sql(self,sys_name=None,cpu_info=None,board_info=None,disk_info=None,mem_info=None,grap_info=None,note=None,upload_time=None):
+    def ins_info_sql(self,companyname=None,companytype=None,companysize=None,postioname=None,postdescurl=None,workexp=None,
+                     walfare=None,wagemoney=None,worklocation=None,update=None):
+    #将查询数据写入数据库
     # def ins_computer_info_sql(self, sys_name=None, cpu_info=None,): #测试用的方法
-        sql_com1="insert into computer_info(computer_name,cpu_info,board_info,disk_info,mem_info,grap_card,note,upload_time) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
+        sql_com1="insert into zljobinfo(companyname,companytype,companysize,postioname,postdescurl,workexp,walfare," \
+                 "wagemoney,worklocation,v_update) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
         # sql_com1 = "insert into computer_info(computer_name,cpu_info) VALUES (%s,%s)" #测试用的方法
-        values = (sys_name, cpu_info, board_info, disk_info, mem_info, grap_info, note,upload_time)
+        values = (companyname,companytype,companysize,postioname,postdescurl,workexp,walfare,wagemoney,worklocation,update)
         # values = (sys_name, cpu_info)
         # sql_com2="select * from computer_info"
         self.sql.commit()

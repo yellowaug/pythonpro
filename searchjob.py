@@ -1,7 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-import json
-import jsonpath
 class Serach(object):
     def __init__(self,page):
         url="http://s.gxrc.com/sJob?schType=1&workProperty=&keyword=运维&page={num}".format(num=page)
