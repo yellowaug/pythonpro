@@ -25,13 +25,25 @@ class ZLZPSearch(object):
         welfare=jsonpath.jsonpath(zlzp_json,"$..welfare") #公司福利
         workexp=jsonpath.jsonpath(zlzp_json,"$..workingExp[name]") #工作年限要求
         sql=sqlomp.SQLOMP()
-        insdata={"companyname":companyname[0],"companytype":companytype[0],
-                 "companysize":companysize[0],"postioname":jobname[0],
-                 "postdescurl":postdescurl[0],"workexp":workexp[0],
-                 "worklocation":jobcity[0],"wagemoney":salary[0],
+        # insdata={"companyname":companyname[0],"companytype":companytype[0],
+        #          "companysize":companysize[0],"postioname":jobname[0],
+        #          "postdescurl":postdescurl[0],"workexp":workexp[0],
+        #          "worklocation":jobcity[0],"wagemoney":salary[0],
+        #          }
+        # sql.instosql("zlzpdb",**insdata)
+        # print(len(companyname))
+
+        for i in range(90):
+            print("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n"%(companyname[i],companytype[i],companysize[i],jobname[i],postdescurl[i],
+                                                              jobcity[i],update[i],salary[i],welfare[i],workexp[i]))
+            insdata={"companyname":companyname[i],"companytype":companytype[i],
+                 "companysize":companysize[i],"postioname":jobname[i],
+                 "postdescurl":postdescurl[i],"workexp":workexp[i],
+                 "worklocation":jobcity[i],"wagemoney":salary[i],
+                 "updates":update[i]
                  }
-        sql.instosql("zlzpdb",**insdata)
-        print("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n"%(companyname,companytype,companysize,jobname,postdescurl,jobcity,update,salary,welfare,workexp))
+            sql.instosql(**insdata)
+        # print("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n"%(companyname,companytype,companysize,jobname,postdescurl,jobcity,update,salary,welfare,workexp))
 
 t1=time.time()
 a =ZLZPSearch()

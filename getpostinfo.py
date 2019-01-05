@@ -26,3 +26,4 @@ class GETpostinfo(object):
             w_contenttext = w_content.p.get_text()
             w_contenttext="".join(w_contenttext.split())#去除获取内容中的空格段落
             print(w_contenttext)
+
