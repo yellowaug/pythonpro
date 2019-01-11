@@ -40,9 +40,8 @@ class ZLZPSearch(object):
                  "companysize":companysize[i],"postioname":jobname[i],
                  "postdescurl":postdescurl[i],"workexp":workexp[i],
                  "worklocation":jobcity[i],"wagemoney":salary[i],
-                 "updates":update[i]
-                 }
-            sql.instosql(**insdata)
+                 "updates":update[i],"walfare":str(welfare[i])}
+            sql.instosql("zlzpdb","zljobinfo",**insdata)
         # print("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n"%(companyname,companytype,companysize,jobname,postdescurl,jobcity,update,salary,welfare,workexp))
 
 t1=time.time()
