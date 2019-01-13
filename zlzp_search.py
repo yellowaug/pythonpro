@@ -1,5 +1,5 @@
-import threading
-import time
+# import threading
+# import time
 import sqlomp
 import requests
 import json
@@ -41,15 +41,15 @@ class ZLZPSearch(object):
                  "postdescurl":postdescurl[i],"workexp":workexp[i],
                  "worklocation":jobcity[i],"wagemoney":salary[i],
                  "updates":update[i],"walfare":str(welfare[i])}
-            sql.instosql("zlzpdb","zljobinfo",**insdata)
+            sql.instosql("zlzpdb","yw_zljobinfo",**insdata)
         # print("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n"%(companyname,companytype,companysize,jobname,postdescurl,jobcity,update,salary,welfare,workexp))
 
-t1=time.time()
-a =ZLZPSearch()
-a.getinfo()
-# t=threading.Thread(target=a.getinfo)
-# t.start()
-# print(threading.activeCount())
-t2=time.time()
-print(t2-t1)
+# t1=time.time()
+# a =ZLZPSearch()
+# a.getinfo()
+# # t=threading.Thread(target=a.getinfo)
+# # t.start()
+# # print(threading.activeCount())
+# t2=time.time()
+# print(t2-t1)
 
