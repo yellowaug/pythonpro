@@ -13,3 +13,4 @@ class SQLOMP(object):
         #                           "companysize":"test3",
         #                           "postioname":"test4"}])
         conn.execute(ins,kwargs)
+    # def readtosql(self):
